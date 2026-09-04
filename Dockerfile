@@ -36,6 +36,16 @@ COPY --from=runtime-deps /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY package.json ./
 COPY prisma ./prisma
+# prisma/seed.ts is deliberately excluded from the `nest build` output (see
+# tsconfig.build.json) and runs via ts-node straight from source at container
+# startup instead — so ts-node needs both tsconfig.json (without it, it falls
+# back to its own internal defaults, which triggered TS5109 in practice) and
+# the actual `../src/...` files seed.ts imports (password hashing, the mailer
+# building blocks) to resolve correctly. Confirmed by reproducing this exact
+# runtime file layout outside Docker: seed.ts fails without either of these
+# two lines and compiles/runs correctly with both present.
+COPY tsconfig.json ./
+COPY src ./src
 RUN chown -R appuser:appuser /app
 
 USER appuser
