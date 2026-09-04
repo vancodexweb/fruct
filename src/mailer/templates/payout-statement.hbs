@@ -1,0 +1,36 @@
+<h1 style="font-size:20px;margin:0 0 16px;">Расчётный лист за период {{periodStart}} — {{periodEnd}}</h1>
+<p style="font-size:15px;line-height:1.5;margin:0 0 16px;">
+  Здравствуйте, {{fullName}}!
+</p>
+<p style="font-size:15px;line-height:1.5;margin:0 0 16px;">
+  Ваш расчёт за период {{periodStart}} — {{periodEnd}}:
+</p>
+<table role="presentation" style="width:100%;background:#f4f4f5;border-radius:6px;margin:0 0 16px;">
+  <tr>
+    <td style="padding:16px;">
+      <p style="margin:0 0 8px;font-size:14px;"><strong>Оклад:</strong> {{baseSalary}} ₽</p>
+      <p style="margin:0 0 8px;font-size:14px;"><strong>Комиссия с продаж:</strong> {{totalCommission}} ₽</p>
+      <p style="margin:0;font-size:16px;"><strong>Итого к выплате:</strong> {{totalPayout}} ₽</p>
+    </td>
+  </tr>
+</table>
+{{#if deals}}
+<p style="font-size:14px;font-weight:bold;margin:0 0 8px;">Сделки, учтённые в расчёте:</p>
+<table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 16px;font-size:13px;">
+  <tr>
+    <td style="padding:6px 8px;border-bottom:1px solid #e4e4e7;font-weight:bold;">Дата</td>
+    <td style="padding:6px 8px;border-bottom:1px solid #e4e4e7;font-weight:bold;">Сумма сделки</td>
+    <td style="padding:6px 8px;border-bottom:1px solid #e4e4e7;font-weight:bold;">Комиссия</td>
+  </tr>
+  {{#each deals}}
+  <tr>
+    <td style="padding:6px 8px;border-bottom:1px solid #f4f4f5;">{{this.date}}</td>
+    <td style="padding:6px 8px;border-bottom:1px solid #f4f4f5;">{{this.totalAmount}} ₽</td>
+    <td style="padding:6px 8px;border-bottom:1px solid #f4f4f5;">{{this.commissionAmount}} ₽</td>
+  </tr>
+  {{/each}}
+</table>
+{{/if}}
+<p style="font-size:13px;color:#71717a;line-height:1.5;margin:0;">
+  Это письмо сформировано автоматически. Если у вас есть вопросы по расчёту — обратитесь к владельцу магазина.
+</p>

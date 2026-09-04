@@ -6,7 +6,14 @@ import IORedis from 'ioredis';
 import { ClsModule } from 'nestjs-cls';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 import { CatalogModule } from './catalog/catalog.module';
+import { DealsModule } from './deals/deals.module';
+import { DeliveryCalcModule } from './delivery-calc/delivery-calc.module';
+import { LeadsModule } from './leads/leads.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { PayoutsModule } from './payouts/payouts.module';
+import { ScriptsModule } from './scripts/scripts.module';
 import { validateEnv } from './common/config/env.validation';
 import { PrismaExceptionFilter } from './common/filters/prisma-exception.filter';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
@@ -36,6 +43,13 @@ import { UsersModule } from './users/users.module';
     MailerModule,
     UsersModule,
     CatalogModule,
+    ScriptsModule,
+    LeadsModule,
+    DeliveryCalcModule,
+    DealsModule,
+    PayoutsModule,
+    AnalyticsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [

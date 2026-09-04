@@ -108,7 +108,17 @@ class EnvironmentVariables {
 }
 
 export function validateEnv(config: Record<string, unknown>): EnvironmentVariables {
-  const validatedConfig = plainToInstance(EnvironmentVariables, config, {
+  // dotenv turns every blank "KEY=" line in .env into an empty string, never
+  // `undefined` — and .env.example deliberately leaves every optional var
+  // blank. class-validator's @IsOptional() only skips validation for
+  // `undefined`/`null`, so a stricter validator like @IsUrl() would reject
+  // that blank string instead of treating it as "not configured". Dropping
+  // empty-string keys here makes them genuinely absent, so @IsOptional()
+  // takes over and any class-field default still applies normally.
+  const withoutBlanks = Object.fromEntries(
+    Object.entries(config).filter(([, value]) => value !== ''),
+  );
+  const validatedConfig = plainToInstance(EnvironmentVariables, withoutBlanks, {
     enableImplicitConversion: true,
   });
   const errors = validateSync(validatedConfig, { skipMissingProperties: false });

@@ -9,6 +9,10 @@ export enum MailTemplate {
   // `roleLabel` carries the human-readable role for the email copy.
   CREDENTIALS_ISSUED = 'credentials-issued',
   PASSWORD_RESET = 'password-reset',
+  PAYOUT_STATEMENT = 'payout-statement',
+  PAYOUT_STATUS_CHANGED = 'payout-status-changed',
+  SLA_BREACH = 'sla-breach',
+  DAILY_DIGEST = 'daily-digest',
 }
 
 export interface CredentialsIssuedContext {
@@ -24,9 +28,52 @@ export interface PasswordResetContext {
   expiresInMinutes: number;
 }
 
+export interface PayoutStatementDealLine {
+  date: string;
+  totalAmount: string;
+  commissionAmount: string;
+}
+
+export interface PayoutStatementContext {
+  fullName: string;
+  periodStart: string;
+  periodEnd: string;
+  baseSalary: string;
+  totalCommission: string;
+  totalPayout: string;
+  deals: PayoutStatementDealLine[];
+}
+
+export interface PayoutStatusChangedContext {
+  fullName: string;
+  periodStart: string;
+  periodEnd: string;
+  totalPayout: string;
+  statusLabel: string;
+}
+
+export interface SlaBreachContext {
+  leadFullName: string;
+  leadPhone: string;
+  minutesOverdue: number;
+}
+
+export interface DailyDigestContext {
+  tenantName: string;
+  date: string;
+  newLeadsCount: number;
+  dealsClosedCount: number;
+  revenueToday: string;
+  slaBreachesCount: number;
+}
+
 export interface MailTemplateContextMap {
   [MailTemplate.CREDENTIALS_ISSUED]: CredentialsIssuedContext;
   [MailTemplate.PASSWORD_RESET]: PasswordResetContext;
+  [MailTemplate.PAYOUT_STATEMENT]: PayoutStatementContext;
+  [MailTemplate.PAYOUT_STATUS_CHANGED]: PayoutStatusChangedContext;
+  [MailTemplate.SLA_BREACH]: SlaBreachContext;
+  [MailTemplate.DAILY_DIGEST]: DailyDigestContext;
 }
 
 /** Already-rendered email, ready to hand to a transport. */
