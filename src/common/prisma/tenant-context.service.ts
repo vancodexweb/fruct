@@ -19,7 +19,7 @@ export class TenantContextService {
         tenantId: context.tenantId,
         userId: context.userId,
         role: context.role,
-      } as AppClsStore,
+      },
       callback,
     );
   }

@@ -41,10 +41,12 @@ export function tenantScopingExtension(cls: ClsService<AppClsStore>) {
       query: {
         $allModels: {
           // Prisma's extension typings can't express "different arg shape per
-          // operation" generically, so this boundary is deliberately `any` —
-          // see the doc comment above for why that's the right tradeoff here.
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          async $allOperations({ model, operation, args, query }: any) {
+          // operation" generically, so everything in this function operates
+          // within a deliberate `any` boundary — see the doc comment above
+          // for why that's the right tradeoff here, rather than disabling
+          // these rules line-by-line.
+          /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
+          $allOperations({ model, operation, args, query }: any) {
             if (!model || !TENANT_SCOPED_MODELS.has(model as Prisma.ModelName)) {
               return query(args);
             }
@@ -58,7 +60,6 @@ export function tenantScopingExtension(cls: ClsService<AppClsStore>) {
               );
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const scopedArgs: Record<string, any> = { ...(args ?? {}) };
 
             if (operation === 'create') {
@@ -78,6 +79,7 @@ export function tenantScopingExtension(cls: ClsService<AppClsStore>) {
 
             return query(scopedArgs);
           },
+          /* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
         },
       },
     }),

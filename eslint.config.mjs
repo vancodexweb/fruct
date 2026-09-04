@@ -23,6 +23,9 @@ export default tseslint.config(
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/no-unsafe-argument': 'off',
+      // Static `fromEntity` mappers (e.g. `items.map(FooDto.fromEntity)`) never
+      // touch `this` — this is the documented escape hatch for that idiom.
+      '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
     },
   },
 );

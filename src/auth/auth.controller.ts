@@ -24,7 +24,10 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Вход по email и паролю' })
   @ApiResponse({ status: 200, type: AuthTokensDto })
-  @ApiResponse({ status: 401, description: 'Неверный email или пароль, либо учётная запись заблокирована.' })
+  @ApiResponse({
+    status: 401,
+    description: 'Неверный email или пароль, либо учётная запись заблокирована.',
+  })
   login(@Body() dto: LoginDto): Promise<AuthTokensDto> {
     return this.authService.login(dto);
   }
@@ -34,7 +37,10 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Обновление пары токенов по refresh-токену (с ротацией)' })
   @ApiResponse({ status: 200, type: AuthTokensDto })
-  @ApiResponse({ status: 401, description: 'Refresh-токен недействителен, истёк или уже использован.' })
+  @ApiResponse({
+    status: 401,
+    description: 'Refresh-токен недействителен, истёк или уже использован.',
+  })
   refresh(@Body() dto: RefreshTokenDto): Promise<AuthTokensDto> {
     return this.authService.refresh(dto);
   }

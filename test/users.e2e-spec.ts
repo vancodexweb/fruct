@@ -24,6 +24,7 @@ import { Test } from '@nestjs/testing';
 import { Role } from '@prisma/client';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
+import { AuthTokensDto } from '../src/auth/dto/auth-tokens.dto';
 import { PrismaService } from '../src/common/prisma/prisma.service';
 import { hashPassword } from '../src/common/security/password.util';
 
@@ -79,13 +80,13 @@ describe('Users (e2e) — RolesGuard enforcement', () => {
       .post('/auth/login')
       .send({ email: 'owner@e2e.test', password: OWNER_PASSWORD })
       .expect(200);
-    ownerAccessToken = ownerLogin.body.accessToken;
+    ownerAccessToken = (ownerLogin.body as AuthTokensDto).accessToken;
 
     const managerLogin = await request(app.getHttpServer())
       .post('/auth/login')
       .send({ email: 'manager@e2e.test', password: MANAGER_PASSWORD })
       .expect(200);
-    managerAccessToken = managerLogin.body.accessToken;
+    managerAccessToken = (managerLogin.body as AuthTokensDto).accessToken;
   });
 
   afterAll(async () => {
@@ -111,8 +112,9 @@ describe('Users (e2e) — RolesGuard enforcement', () => {
       .get('/users')
       .set('Authorization', `Bearer ${ownerAccessToken}`)
       .expect(200);
-    expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body.length).toBeGreaterThan(0);
+    const managers = response.body as unknown[];
+    expect(Array.isArray(managers)).toBe(true);
+    expect(managers.length).toBeGreaterThan(0);
   });
 
   describe('MANAGER attempting OWNER-only endpoints', () => {

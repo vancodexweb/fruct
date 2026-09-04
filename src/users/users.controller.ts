@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
@@ -32,7 +42,8 @@ export class UsersController {
   @Patch('me')
   @Roles(Role.OWNER, Role.MANAGER)
   @ApiOperation({
-    summary: 'Обновление собственного профиля (только ФИО — % комиссии и оклад менять нельзя даже себе)',
+    summary:
+      'Обновление собственного профиля (только ФИО — % комиссии и оклад менять нельзя даже себе)',
   })
   @ApiResponse({ status: 200, type: UserResponseDto })
   updateMe(
@@ -57,7 +68,9 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: '[Только OWNER] Изменить данные менеджера (ФИО, % комиссии, оклад, лимит скидки)' })
+  @ApiOperation({
+    summary: '[Только OWNER] Изменить данные менеджера (ФИО, % комиссии, оклад, лимит скидки)',
+  })
   @ApiResponse({ status: 200, type: UserResponseDto })
   update(@Param('id') id: string, @Body() dto: UpdateUserDto): Promise<UserResponseDto> {
     return this.usersService.updateManager(id, dto);
@@ -79,7 +92,9 @@ export class UsersController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: '[Только OWNER] Мягко удалить менеджера (деактивация + анонимизация email)' })
+  @ApiOperation({
+    summary: '[Только OWNER] Мягко удалить менеджера (деактивация + анонимизация email)',
+  })
   @ApiResponse({ status: 204 })
   remove(@Param('id') id: string): Promise<void> {
     return this.usersService.deleteManager(id);

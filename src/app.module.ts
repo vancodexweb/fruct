@@ -6,6 +6,7 @@ import IORedis from 'ioredis';
 import { ClsModule } from 'nestjs-cls';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
+import { CatalogModule } from './catalog/catalog.module';
 import { validateEnv } from './common/config/env.validation';
 import { PrismaExceptionFilter } from './common/filters/prisma-exception.filter';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
@@ -34,6 +35,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     MailerModule,
     UsersModule,
+    CatalogModule,
   ],
   controllers: [AppController],
   providers: [

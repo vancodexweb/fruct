@@ -1,5 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'manager@example.com' })
@@ -12,7 +21,8 @@ export class CreateUserDto {
   fullName: string;
 
   @ApiPropertyOptional({
-    description: 'Если не указан — генерируется временный пароль и отправляется на email менеджера.',
+    description:
+      'Если не указан — генерируется временный пароль и отправляется на email менеджера.',
     minLength: 8,
   })
   @IsOptional()
@@ -20,7 +30,12 @@ export class CreateUserDto {
   @MinLength(8, { message: 'Пароль должен содержать не менее 8 символов.' })
   password?: string;
 
-  @ApiPropertyOptional({ description: 'Процент комиссии с продаж, %', minimum: 0, maximum: 100, default: 0 })
+  @ApiPropertyOptional({
+    description: 'Процент комиссии с продаж, %',
+    minimum: 0,
+    maximum: 100,
+    default: 0,
+  })
   @IsOptional()
   @IsNumber()
   @Min(0)
@@ -33,7 +48,12 @@ export class CreateUserDto {
   @Min(0)
   baseSalary?: number;
 
-  @ApiPropertyOptional({ description: 'Максимальная скидка, которую менеджер может дать самостоятельно, %', minimum: 0, maximum: 100, default: 0 })
+  @ApiPropertyOptional({
+    description: 'Максимальная скидка, которую менеджер может дать самостоятельно, %',
+    minimum: 0,
+    maximum: 100,
+    default: 0,
+  })
   @IsOptional()
   @IsNumber()
   @Min(0)

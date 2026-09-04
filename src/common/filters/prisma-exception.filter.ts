@@ -31,9 +31,12 @@ export class PrismaExceptionFilter implements ExceptionFilter {
   private toHttpException(exception: Prisma.PrismaClientKnownRequestError): HttpException {
     switch (exception.code) {
       case 'P2002': {
-        const target = Array.isArray(exception.meta?.target)
-          ? (exception.meta.target as string[]).join(', ')
-          : String(exception.meta?.target ?? 'поле');
+        const rawTarget = exception.meta?.target;
+        const target = Array.isArray(rawTarget)
+          ? rawTarget.join(', ')
+          : typeof rawTarget === 'string'
+            ? rawTarget
+            : 'поле';
         return new ConflictException(`Запись с таким значением поля "${target}" уже существует.`);
       }
       case 'P2025':
@@ -42,7 +45,9 @@ export class PrismaExceptionFilter implements ExceptionFilter {
         return new ConflictException('Операция нарушает ссылочную целостность данных.');
       default:
         this.logger.error(`Необработанная ошибка Prisma [${exception.code}]: ${exception.message}`);
-        return new InternalServerErrorException('Внутренняя ошибка сервера при работе с базой данных.');
+        return new InternalServerErrorException(
+          'Внутренняя ошибка сервера при работе с базой данных.',
+        );
     }
   }
 }
