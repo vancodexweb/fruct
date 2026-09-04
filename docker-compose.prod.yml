@@ -68,6 +68,16 @@ services:
     ports:
       - '80:80'
       - '443:443'
+    # On hosts using systemd-resolved, Docker can copy the host's
+    # 127.0.0.53 stub resolver straight into the container's
+    # /etc/resolv.conf — that address is the container's own loopback,
+    # not the host's, so ACME's outbound DNS lookups (Let's Encrypt,
+    # ZeroSSL) fail with "connection refused" instead of ever reaching a
+    # real resolver. Pointing this container at public resolvers directly
+    # sidesteps the host's resolv.conf entirely.
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     environment:
       DOMAIN: ${DOMAIN}
       ACME_EMAIL: ${ACME_EMAIL}
