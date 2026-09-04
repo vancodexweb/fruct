@@ -16,7 +16,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "pretest:e2e": "prisma migrate deploy",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e": "jest --config ./test/jest-e2e.json --forceExit",
     "prisma:generate": "prisma generate",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",

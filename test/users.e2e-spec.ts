@@ -2,6 +2,12 @@
 // extension, BullMQ included) against a live Postgres + Redis. Point
 // DATABASE_URL/REDIS_URL at disposable instances before running
 // `npm run test:e2e` — `pretest:e2e` applies migrations automatically.
+//
+// Note: `test:e2e` runs Jest with --forceExit. All assertions still run and
+// are reported normally — this only skips Jest's post-run wait for stray
+// handles, which BullMQ/ioredis reliably leave open even after app.close()
+// (each duplicated Redis connection needs its own explicit .quit(), and
+// chasing every one of them buys nothing a test suite should care about).
 process.env.NODE_ENV = process.env.NODE_ENV || 'test';
 process.env.DATABASE_URL =
   process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/fruct_test';
