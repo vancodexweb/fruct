@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    // Explicit on purpose: left unspecified, some ts-node/TypeScript version
+    // combinations infer a "NodeNext"-compatible default and then reject it
+    // with TS5109 ("moduleResolution must be set to NodeNext... when module
+    // is set to NodeNext") even though `module` above is "commonjs" — seen
+    // running `prisma db seed` (ts-node) in a fresh `npm ci` on one
+    // deployment target but not others. Pinning the classic, always-valid
+    // CommonJS pairing removes the ambiguity outright.
+    "moduleResolution": "node",
     "declaration": false,
     "removeComments": true,
     "emitDecoratorMetadata": true,
